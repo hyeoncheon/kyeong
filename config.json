@@ -1,0 +1,10 @@
+[
+  {
+    "plugin": "echo",
+    "arguments": { "say": "Hello", "interval": 10 }
+  },
+  {
+    "plugin": "echo",
+    "arguments": { "say": "World", "interval": 5 }
+  }
+]
