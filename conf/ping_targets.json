@@ -1,0 +1,4 @@
+[
+  {"name":"Google Web","addr":"www.google.com","port":"http"},
+  {"name":"SoftLayer","addr":"www.softlayer.com","port":"http"}
+]

@@ -22,7 +22,10 @@ class Kyeong
       rescue LoadError
         puts "Failed!"
         puts "Error: Plugin '#{c[:plugin]}' cannot be loaded. Abort!"
-        exit
+        raise
+      rescue RuntimeError
+        puts "Plugin configuration error. Abort!"
+        raise
       end
     end
     puts "  #{@workers.length} workers are configured."
@@ -36,6 +39,7 @@ class Kyeong
       :dir => $pid_dir,
       :log_output => true
     })
+    #  :ontop => true,
 
     threads = []
     @workers.each do |worker|
@@ -80,10 +84,11 @@ if ARGV[0] == "start"
       puts "I will remove the pid file for you."
       File.delete("#{$pid_dir}/#{$app_name}.pid")
     end
+    exit
   rescue Errno::ENOENT
-    k = Kyeong.new
-    k.run
   end
+  k = Kyeong.new
+  k.run
 elsif ARGV[0] == "stop"
   begin
     pid = File.read("#{$pid_dir}/#{$app_name}.pid")

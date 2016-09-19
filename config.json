@@ -4,7 +4,20 @@
     "arguments": { "say": "Hello", "interval": 10 }
   },
   {
-    "plugin": "echo",
-    "arguments": { "say": "World", "interval": 5 }
+    "plugin": "snmp",
+    "arguments": {
+      "device": "192.168.0.1",
+      "shipper_addr": "localhost",
+      "shipper_port": 7450,
+      "interval": 60
+    }
+  },
+  {
+    "plugin": "ping",
+    "arguments": {
+      "shipper_addr": "localhost",
+      "shipper_port": 7450,
+      "interval": 300
+    }
   }
 ]
