@@ -1,2 +1,5 @@
 /vendor
 /.bundle
+
+config.json
+conf/*.json
