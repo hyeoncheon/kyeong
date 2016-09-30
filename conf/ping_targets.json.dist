@@ -1,4 +1,4 @@
 [
-  {"name":"Google Web","addr":"www.google.com","port":"http"},
-  {"name":"SoftLayer","addr":"www.softlayer.com","port":"http"}
+  {"ping_name":"Google Web","ping_addr":"www.google.com","ping_port":"http"},
+  {"ping_name":"SoftLayer","ping_addr":"www.softlayer.com","ping_port":"http"}
 ]

@@ -6,6 +6,8 @@ require 'json'
 
 class Snmp
   def initialize(args)
+    @testing = args[:testing]
+    @verbose = args[:verbose]
     @interval = args[:interval].to_i
     @device = args[:device]
     @shipper_addr = args[:shipper_addr]
@@ -18,7 +20,8 @@ class Snmp
   end
 
   def run
-    puts "SNMP #{@device} #{@shipper_addr}:#{@shipper_port} @#{@interval}"
+    puts "SNMP conf: #{@device} #{@shipper_addr}:#{@shipper_port} @#{@interval}"
+    puts "     mode: testing/verbose '#{@testing}/#{@verbose}'"
     ifTable_columns = [ "ifIndex", "ifName",
                         "ifInOctets", "ifOutOctets",
                         "ifSpeed", "ifOperStatus" ]
@@ -51,8 +54,12 @@ class Snmp
             end
             store["d#{idx.value}"] = data
 
-            sock.send("#{data.to_json}\n", 0, @shipper_addr, @shipper_port)
-            puts "#{data.to_json}"
+            if not @testing
+              sock.send("#{data.to_json}\n", 0, @shipper_addr, @shipper_port)
+              puts "#{data.to_json}" if @verbose
+            else
+              puts "#{data.to_json}"
+            end
           end
         end
       end
