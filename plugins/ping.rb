@@ -31,13 +31,17 @@ class Ping
 
           sum = 0
           count = 0
-          [1,2,3].each do
+          [1,2,3,4,5].each do
             if t.ping
               sum += t.duration
               count += 1
             end
           end
-          target[:ping_rtt_ms] = sum * 1000 / count
+          if count > 0
+            target[:ping_rtt_ms] = sum * 1000 / count
+          else
+            target[:ping_rtt_ms] = -999
+          end
           target[:ping_count] = count
 
           if not @testing

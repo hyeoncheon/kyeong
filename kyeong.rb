@@ -32,7 +32,7 @@ class Kyeong
   end
 
   def run
-    puts "Starting Kyeong workers..."
+    puts "Starting Kyeong workers... (" + Time.now.to_s + ")"
     Daemons.daemonize({
       :app_name => $app_name,
       :dir_mode => :normal,
@@ -72,7 +72,7 @@ def klass(str)
   return r
 end
 
-if ARGV[0] == "start"
+def start
   begin
     pid = File.read("#{$pid_dir}/#{$app_name}.pid")
     print_and_flush "Warning: Another process(#{pid.to_i}) is running."
@@ -84,17 +84,19 @@ if ARGV[0] == "start"
       puts "I will remove the pid file for you."
       File.delete("#{$pid_dir}/#{$app_name}.pid")
     end
-    exit
+    return
   rescue Errno::ENOENT
   end
   k = Kyeong.new
   k.run
-elsif ARGV[0] == "stop"
+end
+
+def stop
   begin
     pid = File.read("#{$pid_dir}/#{$app_name}.pid")
   rescue Errno::ENOENT
     puts "Pid file is not found. Abort!"
-    exit
+    return false
   end
 
   begin
@@ -107,6 +109,20 @@ elsif ARGV[0] == "stop"
     puts "I will remove the pid file for you."
     File.delete("#{$pid_dir}/#{$app_name}.pid")
   end
+  return true
+end
+
+if ARGV[0] == "start"
+  start
+elsif ARGV[0] == "stop"
+  stop
+elsif ARGV[0] == "restart"
+  sec_to_next_5m = (5*60) - Time.now.to_i % (5*60)
+  puts "kyeong will restarted after #{sec_to_next_5m} seconds."
+  sleep sec_to_next_5m - 2
+  stop
+  sleep 2
+  start
 else
   puts "usage: #{$app_name} start|stop"
 end
